@@ -29,21 +29,16 @@ public class LinkedList2 {
         if (head == null || tail == null)
             return null;
 
-        if (head.value == _value)
+        if (head.value == _value) {
             return head;
-        else if (tail.value == _value)
-            return tail;
+        }
 
         Node left = head.next;
-        Node right = tail.prev;
-        while (left != right) {
+        while (left != null) {
             if (left.value == _value)
                 return left;
-            else if (right.value == _value)
-                return right;
 
             left = left.next;
-            right = right.prev;
         }
 
         return null;
@@ -55,24 +50,12 @@ public class LinkedList2 {
         if (head == null || tail == null)
             return nodes;
 
-        if (head == tail && _value == head.value) {
-            nodes.add(head);
-            return nodes;
-        } else if (head == tail)
-            return nodes;
-
         Node left = head;
-        Node right = tail;
 
-        while (left != right) {
+        while (left != null) {
             if (_value == left.value)
                 nodes.add(left);
-            if (_value == right.value)
-                nodes.add(right);
-
             left = left.next;
-            if (left == right) break;
-            right = right.prev;
         }
 
         return nodes;

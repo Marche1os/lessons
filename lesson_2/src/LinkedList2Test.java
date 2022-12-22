@@ -58,6 +58,10 @@ class LinkedList2Test {
         assertEquals(VALUE_1, node.value);
         assertEquals(node, singleNodeList.head);
         assertEquals(node, singleNodeList.tail);
+
+        duoNodeList.addInTail(new Node(512));
+        node = duoNodeList.find(512);
+        assertEquals(512, node.value);
     }
 
     @Test
