@@ -29,7 +29,7 @@ public class DummyLinkedList {
 
     public Node find(int _value) {
         Node left = dummyHead.next;
-        while (left != null) {
+        while (left != null && !(left instanceof DummyNode)) {
             if (left.value == _value)
                 return left;
 
@@ -43,7 +43,7 @@ public class DummyLinkedList {
         final ArrayList<Node> nodes = new ArrayList<>();
 
         Node left = dummyHead.next;
-        while (left != null) {
+        while (left != null && !(left instanceof DummyNode)) {
             if (left.value == _value) {
                 nodes.add(left);
             }
