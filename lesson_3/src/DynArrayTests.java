@@ -98,7 +98,7 @@ public class DynArrayTests {
     }
 
     @Test
-    void insertInIncorrectPositionForCompletedList() {
+    void testInsertOnIncorrectPositions() {
         final DynArray<Integer> array = new DynArray<>(Integer.class);
         for (int i = 0; i < 10; i++)
             array.insert(i, i);
@@ -113,11 +113,43 @@ public class DynArrayTests {
                 () -> array.insert(128, array.capacity + 1)
         );
 
-        array.insert(512, 14);
+        array.insert(512, array.capacity);
 
         assertNull(array.getItem(14));
         assertEquals(512, array.getItem(10));
         assertEquals(9, array.getItem(9));
+    }
+
+    @Test
+    @DisplayName("test insert on incorrect position. And insert by index >= count")
+    void testInsertWithExceededArray() {
+        final DynArray<Integer> array = new DynArray<>(Integer.class);
+
+        for (int i = 0; i < 20; i++) {
+            array.insert(i, i);
+        }
+
+        assertEquals(MIN_CAPACITY * 2, array.capacity);
+        assertEquals(20, array.count);
+
+        assertThrowsExactly(
+                ArrayIndexOutOfBoundsException.class,
+                () -> array.insert(1000, -1)
+        );
+
+        assertThrowsExactly(
+                ArrayIndexOutOfBoundsException.class,
+                () -> array.insert(1000, array.capacity + 1)
+        );
+
+        array.insert(128, array.capacity);
+        assertEquals(128, array.getItem(20));
+        assertNull(array.getItem(array.capacity - 1));
+
+        array.insert(512, array.capacity - 2);
+        assertEquals(512, array.getItem(21));
+        assertNull(array.getItem(array.capacity - 2));
+
     }
 
     @Test
