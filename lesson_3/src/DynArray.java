@@ -44,7 +44,7 @@ public class DynArray<T> {
         if (index < 0 || index > capacity)
             throw new ArrayIndexOutOfBoundsException("index out of bounds");
 
-        if (index == capacity) {
+        if (index >= count) {
             append(itm);
             return;
         }
