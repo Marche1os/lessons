@@ -106,12 +106,20 @@ public class DynArrayTests {
 
         emptyList.insert(5, 1);
 
+
         assertEquals(4, emptyList.count);
         assertEquals(capacity, emptyList.capacity);
 
         assertEquals(5, emptyList.getItem(1));
         assertEquals(1, emptyList.getItem(2));
         assertEquals(2, emptyList.getItem(3));
+    }
+
+    @Test
+    @DisplayName("test Insert null value")
+    void insertNull() {
+        fullCompletedList.insert(128, 16);
+        assertEquals(MIN_CAPACITY * 2, fullCompletedList.capacity);
     }
 
     @Test
