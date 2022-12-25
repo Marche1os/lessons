@@ -83,13 +83,41 @@ public class DynArrayTests {
 
     @Test
     @DisplayName("test Insert in incorrect index")
-    void insertInWrongPosition() {
-        assertThrowsExactly(ArrayIndexOutOfBoundsException.class, () -> emptyList.insert(148, -1));
+    void insertInWrongPositionForEmptyList() {
+        assertThrowsExactly(
+                ArrayIndexOutOfBoundsException.class,
+                () -> emptyList.insert(148, -1)
+        );
+
         assertDoesNotThrow(() -> emptyList.insert(512, emptyList.capacity - 1));
+
         assertThrowsExactly(
                 ArrayIndexOutOfBoundsException.class,
                 () -> emptyList.insert(1024, emptyList.capacity + 1)
         );
+    }
+
+    @Test
+    void insertInIncorrectPositionForCompletedList() {
+        final DynArray<Integer> array = new DynArray<>(Integer.class);
+        for (int i = 0; i < 10; i++)
+            array.insert(i, i);
+
+        assertThrowsExactly(
+                ArrayIndexOutOfBoundsException.class,
+                () -> array.insert(128, -1)
+        );
+
+        assertThrowsExactly(
+                ArrayIndexOutOfBoundsException.class,
+                () -> array.insert(128, array.capacity + 1)
+        );
+
+        array.insert(512, 14);
+
+        assertNull(array.getItem(14));
+        assertEquals(512, array.getItem(10));
+        assertEquals(9, array.getItem(9));
     }
 
     @Test
@@ -126,30 +154,6 @@ public class DynArrayTests {
     }
 
     @Test
-    @DisplayName("test Insert in the start when penultimate element is null and last element is not")
-    void insertWhenLastElementNotNull() {
-        final DynArray<Integer> array = new DynArray<>(Integer.class);
-        for (int i = 0; i < 15; i++) {
-            array.append(i);
-        }
-        array.remove(14);
-
-        assertNull(array.getItem(14));
-        assertEquals(MIN_CAPACITY, array.capacity);
-
-        array.insert(128, 15);
-
-        assertEquals(128, array.getItem(15));
-        assertNull(array.getItem(14));
-
-        array.insert(512, 1);
-        assertEquals(512, array.getItem(1));
-        assertEquals(1, array.getItem(2));
-        assertEquals(2, array.getItem(3));
-        assertEquals(128, array.getItem(15));
-    }
-
-    @Test
     @DisplayName("test Insert by index when array is required be exceeded")
     void insertByIndexInCompletedList() {
         final int capacity = fullCompletedList.capacity;
@@ -177,8 +181,8 @@ public class DynArrayTests {
     @Test
     void insertInTheEnd() {
         emptyList.insert(512, 15);
-        int el = emptyList.getItem(15);
-        assertEquals(512, el);
+        assertNull(emptyList.getItem(15));
+        assertEquals(512, emptyList.getItem(0));
     }
 
     @Test
