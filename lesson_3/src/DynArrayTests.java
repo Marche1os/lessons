@@ -88,7 +88,7 @@ public class DynArrayTests {
         assertDoesNotThrow(() -> emptyList.insert(512, emptyList.capacity - 1));
         assertThrowsExactly(
                 ArrayIndexOutOfBoundsException.class,
-                () -> emptyList.insert(1024, emptyList.capacity)
+                () -> emptyList.insert(1024, emptyList.capacity + 1)
         );
     }
 
@@ -118,8 +118,11 @@ public class DynArrayTests {
     @Test
     @DisplayName("test Insert null value")
     void insertNull() {
-        fullCompletedList.insert(128, 16);
-        assertEquals(MIN_CAPACITY * 2, fullCompletedList.capacity);
+        emptyList.insert(128, 16);
+        assertEquals(MIN_CAPACITY, emptyList.capacity);
+        assertEquals(1, emptyList.count);
+        assertNull(emptyList.getItem(15));
+        assertEquals(128, emptyList.getItem(0));
     }
 
     @Test

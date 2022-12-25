@@ -26,8 +26,7 @@ public class DynArray<T> {
     }
 
     public T getItem(int index) {
-        if (isWrongIndex(index))
-            throw new ArrayIndexOutOfBoundsException("index < 0 or index > end of array.");
+        throwExceptionIfWrongIndex(index);
 
         return array[index];
     }
@@ -45,7 +44,7 @@ public class DynArray<T> {
         if (index < 0 || index > capacity)
             throw new ArrayIndexOutOfBoundsException("index out of bounds");
 
-        if (index == count) {
+        if (index == capacity) {
             append(itm);
             return;
         }
