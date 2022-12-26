@@ -147,14 +147,37 @@ public class DynArrayTests {
         assertNull(array.getItem(array.capacity - 1));
 
         array.insert(512, array.capacity - 2);
-        assertEquals(512, array.getItem(21));
-        assertNull(array.getItem(array.capacity - 2));
+        assertEquals(512, array.getItem(array.capacity - 2));
 
     }
 
     @Test
-    @DisplayName("test Insert by index when array element exists and buffer size not exceeded")
     void insertByIndex() {
+        final DynArray<Integer> array = new DynArray<>(Integer.class);
+        final int capacity = 2048;
+        final int count = 1048;
+
+        array.makeArray(capacity);
+
+        assertEquals(capacity, array.capacity);
+        assertEquals(0, array.count);
+
+        for (int i = 0; i < count; i++)
+            array.insert(i, i);
+
+        assertEquals(capacity, array.capacity);
+        assertEquals(count, array.count);
+
+        array.insert(148, 1096);
+
+        assertEquals(148, array.getItem(1096));
+        assertEquals(count + 1, array.count);
+        assertEquals(capacity, array.capacity);
+    }
+
+    @Test
+    @DisplayName("test Insert by index when array element exists and buffer size not exceeded")
+    void insertByIndexWhenValueNotNull() {
         final int capacity = emptyList.capacity;
         assertEquals(0, emptyList.count);
         emptyList.append(0);
@@ -208,13 +231,6 @@ public class DynArrayTests {
         assertNull(fullCompletedList.getItem(17));
         assertEquals(capacity * 2, fullCompletedList.capacity);
         assertEquals(count + 1, fullCompletedList.count);
-    }
-
-    @Test
-    void insertInTheEnd() {
-        emptyList.insert(512, 15);
-        assertNull(emptyList.getItem(15));
-        assertEquals(512, emptyList.getItem(0));
     }
 
     @Test
