@@ -31,11 +31,13 @@ public class DynArrayTests {
     @Test
     @DisplayName("test Insert method when buffer size not exceeded")
     void appendInNotCompletedList() {
-        assertNull(emptyList.getItem(0));
-        assertNull(emptyList.getItem(1));
-        assertNull(emptyList.getItem(2));
         assertEquals(MIN_CAPACITY, emptyList.capacity);
         assertEquals(0, emptyList.count);
+
+        assertThrowsExactly(
+                ArrayIndexOutOfBoundsException.class,
+                () -> emptyList.getItem(0)
+        );
 
         emptyList.append(0);
         emptyList.append(1);
@@ -51,9 +53,6 @@ public class DynArrayTests {
     @Test
     @DisplayName("test append method when count = capacity")
     void appendToFillList() {
-        assertNull(emptyList.getItem(0));
-        assertNull(emptyList.getItem(1));
-        assertNull(emptyList.getItem(2));
         assertEquals(MIN_CAPACITY, emptyList.capacity);
         assertEquals(0, emptyList.count);
 
@@ -62,6 +61,7 @@ public class DynArrayTests {
         }
         assertEquals(emptyList.capacity, emptyList.count);
         assertEquals(MIN_CAPACITY, emptyList.count);
+        assertEquals(MIN_CAPACITY, emptyList.capacity);
     }
 
     @Test
@@ -89,35 +89,15 @@ public class DynArrayTests {
                 () -> emptyList.insert(148, -1)
         );
 
-        assertDoesNotThrow(() -> emptyList.insert(512, emptyList.capacity - 1));
+        assertThrowsExactly(
+                ArrayIndexOutOfBoundsException.class,
+                () -> emptyList.insert(128, 1)
+        );
 
         assertThrowsExactly(
                 ArrayIndexOutOfBoundsException.class,
                 () -> emptyList.insert(1024, emptyList.capacity + 1)
         );
-    }
-
-    @Test
-    void testInsertOnIncorrectPositions() {
-        final DynArray<Integer> array = new DynArray<>(Integer.class);
-        for (int i = 0; i < 10; i++)
-            array.insert(i, i);
-
-        assertThrowsExactly(
-                ArrayIndexOutOfBoundsException.class,
-                () -> array.insert(128, -1)
-        );
-
-        assertThrowsExactly(
-                ArrayIndexOutOfBoundsException.class,
-                () -> array.insert(128, array.capacity + 1)
-        );
-
-        array.insert(512, array.capacity);
-
-        assertNull(array.getItem(14));
-        assertEquals(512, array.getItem(10));
-        assertEquals(9, array.getItem(9));
     }
 
     @Test
@@ -142,12 +122,8 @@ public class DynArrayTests {
                 () -> array.insert(1000, array.capacity + 1)
         );
 
-        array.insert(128, array.capacity);
+        array.insert(128, 20);
         assertEquals(128, array.getItem(20));
-        assertNull(array.getItem(array.capacity - 1));
-
-        array.insert(512, array.capacity - 2);
-        assertEquals(512, array.getItem(array.capacity - 2));
 
     }
 
@@ -168,9 +144,14 @@ public class DynArrayTests {
         assertEquals(capacity, array.capacity);
         assertEquals(count, array.count);
 
-        array.insert(148, 1096);
+        assertThrowsExactly(
+                ArrayIndexOutOfBoundsException.class,
+                () -> array.insert(148, 1096)
+        );
 
-        assertEquals(148, array.getItem(1096));
+        array.insert(512, count);
+
+        assertEquals(512, array.getItem(count));
         assertEquals(count + 1, array.count);
         assertEquals(capacity, array.capacity);
     }
@@ -199,16 +180,6 @@ public class DynArrayTests {
     }
 
     @Test
-    @DisplayName("test Insert null value")
-    void insertNull() {
-        emptyList.insert(128, 16);
-        assertEquals(MIN_CAPACITY, emptyList.capacity);
-        assertEquals(1, emptyList.count);
-        assertNull(emptyList.getItem(15));
-        assertEquals(128, emptyList.getItem(0));
-    }
-
-    @Test
     @DisplayName("test Insert by index when array is required be exceeded")
     void insertByIndexInCompletedList() {
         final int capacity = fullCompletedList.capacity;
@@ -228,9 +199,40 @@ public class DynArrayTests {
         assertEquals(13, fullCompletedList.getItem(14));
         assertEquals(14, fullCompletedList.getItem(15));
         assertEquals(15, fullCompletedList.getItem(16));
-        assertNull(fullCompletedList.getItem(17));
+
+        assertThrowsExactly(
+                ArrayIndexOutOfBoundsException.class,
+                () -> fullCompletedList.getItem(17)
+        );
+
         assertEquals(capacity * 2, fullCompletedList.capacity);
         assertEquals(count + 1, fullCompletedList.count);
+    }
+
+    @Test
+    void insertInTheStart() {
+        final DynArray<Integer> array = new DynArray<>(Integer.class);
+        final int count = 1048;
+        final int capacity = 2048;
+
+        array.makeArray(capacity);
+        assertEquals(0, array.count);
+        assertEquals(capacity, array.capacity);
+
+        for (int i = 0; i < count; i++)
+            array.insert(i, i);
+
+        assertEquals(count - 1, array.getItem(count - 1));
+        assertEquals(capacity, array.capacity);
+
+        array.insert(128, 1);
+
+        assertEquals(0, array.getItem(0));
+        assertEquals(128, array.getItem(1));
+        assertEquals(1, array.getItem(2));
+
+        assertEquals(count + 1, array.count);
+
     }
 
     @Test
@@ -244,8 +246,13 @@ public class DynArrayTests {
 
         assertEquals(1, fullCompletedList.getItem(0));
         assertEquals(2, fullCompletedList.getItem(1));
-        assertNull(fullCompletedList.getItem(15));
+        assertEquals(15, fullCompletedList.getItem(14));
         assertEquals(15, fullCompletedList.count);
+
+        assertThrowsExactly(
+                ArrayIndexOutOfBoundsException.class,
+                () -> fullCompletedList.getItem(15)
+        );
 
         int i = 0;
         for (Integer item : fullCompletedList.array) {
@@ -291,12 +298,12 @@ public class DynArrayTests {
     void removeInWrongPosition() {
         assertThrowsExactly(
                 ArrayIndexOutOfBoundsException.class,
-                () -> emptyList.remove(1)
+                () -> emptyList.remove(0)
         );
 
         assertThrowsExactly(
                 ArrayIndexOutOfBoundsException.class,
-                () -> fullCompletedList.remove(fullCompletedList.capacity)
+                () -> fullCompletedList.remove(fullCompletedList.count)
         );
 
         assertThrowsExactly(

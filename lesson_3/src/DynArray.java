@@ -41,10 +41,10 @@ public class DynArray<T> {
     }
 
     public void insert(T itm, int index) {
-        if (index < 0 || index > capacity)
+        if (index < 0 || index > count)
             throw new ArrayIndexOutOfBoundsException("index out of bounds");
 
-        if (index >= count) {
+        if (index == count) {
             append(itm);
             return;
         }
@@ -107,7 +107,7 @@ public class DynArray<T> {
     }
 
     private boolean isWrongIndex(int index) {
-        return index < 0 || index >= capacity;
+        return index < 0 || index >= count;
     }
 
     private boolean isNeedReduce() {
