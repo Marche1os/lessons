@@ -134,4 +134,16 @@ public class CalculatorPostfixExpressionTest {
         assertEquals(59, result);
     }
 
+    @Test
+    void testDivideExpression() {
+        final Stack<String> stack = new Stack<>();
+        stack.push("=");
+        stack.push("/");
+        stack.push("4");
+        stack.push("8");
+
+        int result = CalculatorPostfixExpression.calcPostfixExpression(stack);
+        assertEquals(2, result);
+    }
+
 }

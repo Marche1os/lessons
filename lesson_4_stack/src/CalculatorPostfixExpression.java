@@ -6,7 +6,8 @@ public abstract class CalculatorPostfixExpression {
             Map.of(
                     "+", (v1, v2) -> v1 + v2,
                     "-", (v1, v2) -> v2 - v1,
-                    "*", (v1, v2) -> Math.max(v1, 1) * v2
+                    "*", (v1, v2) -> Math.max(v1, 1) * v2,
+                    "/", (v1, v2) -> Math.max(v2, 1) / Math.max(v1, 1)
             );
 
     public static int calcPostfixExpression(final Stack<String> expression) throws IllegalStateException, NumberFormatException, UnsupportedOperationException {
@@ -22,6 +23,7 @@ public abstract class CalculatorPostfixExpression {
             switch (operator) {
                 case "+":
                 case "-":
+                case "/":
                 case "*": {
                     calculate(result, operator);
                     continue;
