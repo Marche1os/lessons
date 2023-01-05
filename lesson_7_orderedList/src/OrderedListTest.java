@@ -325,9 +325,9 @@ public class OrderedListTest {
 
         Node node = orderedListAsc.head;
         while (node != null) {
-            assertTrue(!node.value.equals(10));
-            assertTrue(!node.value.equals(0));
-            assertTrue(!node.value.equals(18));
+            assertNotEquals(10, node.value);
+            assertNotEquals(0, node.value);
+            assertNotEquals(18, node.value);
 
             node = node.next;
         }
@@ -345,9 +345,9 @@ public class OrderedListTest {
 
         Node node = orderedListDesc.head;
         while (node != null) {
-            assertTrue(!node.value.equals(10));
-            assertTrue(!node.value.equals(0));
-            assertTrue(!node.value.equals(18));
+            assertNotEquals(10, node.value);
+            assertNotEquals(0, node.value);
+            assertNotEquals(18, node.value);
 
             node = node.next;
         }
