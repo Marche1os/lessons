@@ -26,6 +26,15 @@ public class OrderedList<T> {
     }
 
     public int compare(T v1, T v2) {
+        if (v1 instanceof String) {
+            final String str1 = ((String) v1).trim();
+            final String str2 = ((String) v2).trim();
+
+            final int result = str1.compareTo(str2);
+
+            return Integer.compare(result, 0);
+        }
+
         final Integer num1 = (Integer) v1;
         final Integer num2 = (Integer) v2;
 
