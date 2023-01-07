@@ -1,0 +1,35 @@
+total - sumOfArrayNumbers
+//сумма элементов массива целочисленных значений
+
+path - pathToCachedAvatar
+// путь до сохраненного на устройстве изображения пользователя
+
+img - urlToBannerImg
+// url до изображения баннера, хранящегося на сервере
+
+preferences - preferencesUserData
+// локальное хранилище, куда сохраняются данные пользователя (хранилище имеет тип SharedPreferences)
+
+node - currentIterationNode
+// текущая нода в итерации по связному списку
+
+notification - userNotificationSettings
+// выбранные пользователем настройки уведомлений
+
+color - currentBackgroundColorInHex
+// текущий цвет заднего фона в формате hex
+
+result - resultOfUnionTwoSets
+// результат операции объединения двух множеств
+
+author - authorOfEventUserData
+// данные пользователя, создавшего событие
+
+eventLocation - eventLatLng
+// гео-координаты, на которых проходит событие
+
+isDone - isFinishedImageDecoding
+// флаг, сигнализирующий, что декодирование изображения завершено
+
+start - startEventTimeInMillis
+// дата и время начала события в миллисекундах
