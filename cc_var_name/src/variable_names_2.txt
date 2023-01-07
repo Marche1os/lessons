@@ -1,0 +1,69 @@
+/////////////6.1/////////////
+
+isApproximate - isApproximateDeliveryDate
+// флажок, сигнализирующий, что дата доставки приблизительна
+
+isVisualOffer - isVisualOfferShowType
+// флажок, сигнализирующий, что оффер имеет тип отображения visual
+
+financialPriorities - payMethodsByPriorityAsc
+// массив доступных способов оплаты, отсортированных по приоритету для показа пользователю
+
+hasJewelry - containJewelryItemInCart
+// флажок наличия в корзине ювелирных товаров
+
+sumOfItems - sumOfAllItemsAddedInCart
+// количество товаров, добавленных в корзину, включая те, которые нельзя доставить в данный момент
+
+
+/////////////6.2/////////////
+
+FilterBuilder
+//использовался паттерн "Строитель" для добавления параметров фильтра в объект
+
+OffScreenRenderDecoder
+// можно было бы использовать в имени переменной декодера изображений название алгоритма "Off screen rendering"
+
+eventRelativeBitmask
+// использовалось пояснение, что число является битовой маской
+// и в нем закодированы некоторые опции (статус участия, статус подписки и т.д.)
+
+mvpMatrix
+// использовался термин из компьютерной графики - mvp (model-view-projection) для массива матриц
+
+
+/////////////6.3/////////////
+
+String getUserFullNameById(String _id) {
+    String firstName = getUser(_id).firstName;
+    String lastName = getUser(_id).lastName;
+
+    return firstName + " " + lastName;
+}
+
+ class MapScreen {
+    LatLng[] markers;
+
+    float userLatitude;
+    float userLongitude;
+    String eventMarkerIconUrl;
+ }
+
+ class User {
+    String firstName;
+    String lastName;
+    String[] ownEventNames;
+ }
+
+
+ /////////////6.4/////////////
+
+ size - actualElementsCount
+
+ uid - userIdentifier
+
+ el - popElement
+
+ progress - completionPercent
+
+ position - clickItemPosition
