@@ -1,0 +1,23 @@
+loadVideo - loadAndCacheVideoByUrl - Загружает видео по ссылке. Название стало точно отражать все, что происходит в функции.
+
+validatePhoneNumber - isCorrectPhoneNumber - Возвращает признак корректности формата номера.
+
+syncFollowers - getFollowersFromRemoteAndUpdateCache - Загружает список подписчиков и обновляет кэш. (Функция вызывается, когда кэш устарел).
+
+register - signUpAndNavigateToProfile - Функция вызывается по нажатии на кнопку "Зарегистрироваться". После переименования стало очевидно, что происходит после успешной регистрации.
+
+getEncodedWidth - getEncodedWidthPx - Добавил уточнение, что возвращается ширина в пикселях.
+
+applyChanges - applyChangesAndCloseScreen - Отразил побочный эффект функции.
+
+showContent - showContentOrEmpty - Вызывается после успешной загрузки данных. Уточнил в названии, что произойдет при пустом списке данных.
+
+setupToolbar - selectToolbarIconByService - Прошлое название неинформативно, переименовал функции в соответствии с тем, что в ней происходит.
+
+showError - showErrorScreenAndSendMetric - Отразил в названии, что помимо показа ошибки будет отправлена соответствующая метрика.
+
+notifySubscribers - notifySubscribersAuthorizationStatusChanged - Функция, уведомляющая, что статус авторизации изменился. Переименовал, чтобы было наглядно о чем именно уведомить подписчиков.
+
+onlyWithCoords - filterAddressesByGeoPoint - По переданному массиву адресов возвращает только те, что имеют координаты.
+
+getIsMedicine(Product) - isMedicineProduct(Product) - Имя функции вызывало путаницу. Возвращает признак, что товар медицинский.
