@@ -1,0 +1,50 @@
+ /////////////7.1/////////////
+
+createTable - isTableCreated
+mMatrixReady - isMatrixReady
+portrait - isPortraitImage
+like - isPostLiked
+soon - isEventComingSoon
+
+/////////////7.2/////////////
+isSuccess - success
+isOutputDone, isDone - done
+isReady - initialized
+loadingFailure - error
+
+
+/////////////7.3/////////////
+
+В цикле прохождения по фреймам видео использовалась переменная i и использовалась несколько раз внутри цикла.
+Для наглядности можно было бы использовать имя frameIndex/frameNumber.
+Похожая ситуация с циклом по видео-дорожкам (num_tracks). Вместо i можно было бы взять trackIndex/trackNumber.
+
+
+/////////////7.4/////////////
+
+startEncoding/finishEncoding
+
+isDialogVisible/isDialogInvisible
+
+isEventOpened/isEventClosed
+
+isPaid/isFree
+
+/////////////7.5/////////////
+
+// часто локальным переменным присваивал короткие, не содержащие смысла, имена. Так что этот пункт очень точный.
+// Ниже несколько примеров локальных переменных и вариант, на который их стоит переименовать.
+
+nodes - foundByValueNodes
+
+bitmap - croppedToCircleBitmap
+
+editor - preferencesEditorUserData
+
+intent - intentToCreateChatsWidget
+
+// Сходу можно избавиться от переменных, которые хранят свойство типа глобальной переменной. Например, firstName у типа User.
+// Ибо такие переменные нужны только для простоты обращения.
+
+// Также есть переменные-флаги, объявленные в теле класса, которые служат только для сигнала, что нужная функция отработала.
+// От таких переменных получится избавиться, проведя рефакторинг связных классов/функций.
