@@ -1,0 +1,60 @@
+1) Связывание во время написания кода. Условный компонент диалогового окна-пикера цвета с передаваемым заголовком.
+Выбрано раннее связывание для заголовка диалогового окна, так как:
+- Не имеем требований к локализации;
+- Единственная точка входа в диалоговое окна. В случае, если потребуется поменять текст заголовка, ожидаем, что будет затронута только 1 переменная.
+- Наглядность при чтении кода.
+
+class MainScreen {
+    private void showDialog() {
+        new JDialog("Title: Choose the color").isVisible(true); //setting title...
+    }
+
+    // and some code below
+}
+
+2) Связывание во время компиляции. По выдуманному ТЗ запрещаем продавать за раз больше некоего количества товаров.
+Имеем больше 1 обращений к пороговому значению, потому было использование связывание на этапе компиляции.
+Помогает избежать опечаток, как если бы приходилось каждый раз писать условие с конкретным пороговым значением (в нашем случае 3).
+Легко поддается изменению, в случае, если по новым требованиям пороговое значение будет изменено.
+
+class CartScreen {
+    private final int MAX_COUNT_TO_BUY = 3;
+
+    private void onPayClick() {
+        final int countOfStuff = ...
+        if (countOfStuff > MAX_COUNT_TO_BUY) {
+            // inform user that we can't sell more than 3 items for time.
+        }
+    }
+
+    void showCartItems() {
+        // some code...
+        final int countOfStuff = ...
+        if (countOfStuff > MAX_COUNT_TO_BUY) {
+            // showing alert that user can buy only 3 items for time.
+        }
+    }
+
+}
+
+3) Связывание во время работы программы.
+Имеем требование динамические подгружать во время работы программы цвета приложения, в зависимости от темы: светлая, темная.
+В таком случае нашим вариантом будет создание цветов для каждой темы во время создания программы.
+Дальше, во время работы программы, через некую функцию "readColorsConfigByTheme" будет возвращаться соответствующий выбранной теме конфиг с цветами.
+
+class MainView {
+    private int backgroundColor;
+    private int fontColor;
+    private int buttonsColor;
+
+    void initialize() {
+        final Theme themeChosen = getChosenTheme();
+        final Config colorConfig = readColorsConfigByTheme(themeChosen);
+
+        backgroundColor = colorConfig.backgroundColor;
+        fontColor = colorConfig.fontColor;
+        buttonsColor = colorConfig.buttonsColor;
+    }
+
+    // some code below
+}
