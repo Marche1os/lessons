@@ -1,0 +1,72 @@
+/////////////3.1/////////////
+1) Добавил комментарии к конкретному статусу заказа, хранится как enum. Пример:
+
+enum class OrderStatus {
+    // Заказ ожидает оплаты в течении часа, после чего переходит в статус CANCELLED.
+    UNPAID
+}
+
+2) Пример уместного комментария в телеграмме:
+// in some case encoder.dequeueOutputBuffer return IllegalStateException
+// stable reproduced on xiaomi
+// fix it by increasing timeout
+if (e instanceof IllegalStateException && !increaseTimeout) {
+    repeatWithIncreasedTimeout = true;
+}
+
+3) Костыльные случаи на стыке клиента и сервера:
+
+// сервер не принимает опцию доставки "Только разгрузка", поэтому вынуждены проставлять этаж подъема.
+if (selectedLiftingType.equals("unload")) {
+    floor = 1;
+}
+
+4) Добавил комментарий к классу, имеющий отношение к ТЗ от аналитиков, потому что из только кода трудно понять, для чего это все нужно.
+
+/*
+    Идентификатор экрана, отправляемый в аналитику при открытии соответствующего экрана.
+    Актуальные параметры и экраны смотреть тут: [link]
+*/
+enum ScreenAnalyticId {
+    private int analyticId;
+
+    ScreenAnalyticId(final int _id) {
+        analyticId = _id;
+    }
+
+    public int getId() {
+        return analyticId;
+    }
+
+    MAIN(1),
+
+    AD_BANNER(17),
+
+    PROFILE(20),
+}
+
+5) Добавил пояснение, почему размер массива именно такой, ссылкой на документацию.
+
+// Размерность должна быть 16
+// @see android.graphics.SurfaceTexture.getTransformMatrix
+private float[] mvpMatrix = new float[16];
+
+6) Добавил комментарий к декодировщику изображений.
+
+//Процесс декодирования: https://developer.android.com/reference/android/media/MediaCodec#data-processing
+public class DecoderImage {...}
+
+7) Добавил описание к функции, в которой происходит загрузка шейдера, для верхнеуровнего понимания процесса.
+
+/*
+  Создаем объект-шейдер, передаем ему исходник, компилируем и проверяем на наличие ошибок.
+  Если все успешно - линкуем шейдер к программе.
+*/
+private void loadShader(final String shaderSourceCode, final int shaderType) {...}
+
+
+/////////////3.2/////////////
+
+По большей части излишние комментарии были либо временными, либо описывают неочивидную логику, связанную с логикой бекендов.
+К примеру, неочевидный хардкод каких-нибудь айдишников на клиенте, заведенных в рамках эксперимента.
+На такие вещи заводится тикет на выпил и в рамках работы с беклогом - исправляются. На своих проектах комментариев не находил. :)
