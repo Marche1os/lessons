@@ -1,3 +1,4 @@
+//https://www.chrislaux.com/hashtable
 public class BloomFilter {
     public int filter_len;
     private int bitmask;
