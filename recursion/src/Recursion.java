@@ -1,5 +1,6 @@
 public class Recursion {
 
+    //exercise №1
     public static double pow(final int number, final int degree) {
         if (degree == 0)
             return 1;
@@ -20,6 +21,7 @@ public class Recursion {
     }
 
 
+    //exercise №2
     public static int sumOfDigitsNumber(final int number) {
         final String stringNumber = String.valueOf(number);
         
