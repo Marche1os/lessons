@@ -16,21 +16,21 @@ public abstract class MaxValueFounder {
             T firstMax,
             T secondMax
     ) {
-        if (lastIndex == 0) {
+        if (lastIndex == 0)
             return secondMax;
-        } else {
-            final T cur = items.get(lastIndex - 1);
-            if (isHigher(cur, firstMax)) {
-                secondMax = firstMax;
-                firstMax = cur;
-            } else if (isHigher(cur, secondMax)) {
-                secondMax = cur;
-            }
-            return getSecondMaximum(items, lastIndex - 1, firstMax, secondMax);
+
+        final T currentItem = items.get(lastIndex - 1);
+        if (isFirstArgumentHigherThanTwo(currentItem, firstMax)) {
+            secondMax = firstMax;
+            firstMax = currentItem;
+        } else if (isFirstArgumentHigherThanTwo(currentItem, secondMax)) {
+            secondMax = currentItem;
         }
+
+        return getSecondMaximum(items, lastIndex - 1, firstMax, secondMax);
     }
 
-    private static <T extends Comparable<T>> boolean isHigher(T one, T two) {
+    private static <T extends Comparable<T>> boolean isFirstArgumentHigherThanTwo(T one, T two) {
         if (one == two)
             return false;
 

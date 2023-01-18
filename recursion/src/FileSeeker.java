@@ -1,28 +1,21 @@
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class FileSeeker {
 
     public static List<File> getAllFiles(File directory) {
-        return getAllFiles(
-                new ArrayList<>(),
-                directory
-        );
-    }
+        if (directory == null || directory.listFiles() == null)
+            return new ArrayList<>();
 
-    private static List<File> getAllFiles(List<File> foundedFiles, File currentFile) {
-        File[] listFiles = currentFile.listFiles();
-        if (listFiles == null)
-            return foundedFiles;
-        for (File item : listFiles) {
-            foundedFiles.add(item);
-            if (item.isDirectory()) {
-                getAllFiles(foundedFiles, item);
+        List<File> files = new ArrayList<>();
+        for (File item : directory.listFiles()) {
+            if (item.isFile()) {
+                files.add(item);
+            } else {
+                files.addAll(getAllFiles(item));
             }
         }
 
-        return foundedFiles;
+        return files;
     }
-
 }
