@@ -1,25 +1,42 @@
 import java.util.List;
 
-public class MaxValueFounder {
+public abstract class MaxValueFounder {
 
-    public static int findSecondMaximumNumber(List<Integer> numbers) {
-        return doSeekSecondMaximumNumber(numbers, numbers.size(), Integer.MIN_VALUE, Integer.MIN_VALUE);
-    }
-
-    private static int doSeekSecondMaximumNumber(List<Integer> numbers, int lastIndex, int firstMax, int secondMax) {
-        if (lastIndex == 0)
-            return secondMax;
-        else {
-            final int currentNumber = numbers.get(lastIndex - 1);
-            if (currentNumber > firstMax) {
-                secondMax = firstMax;
-                firstMax = currentNumber;
-            } else if (currentNumber > secondMax) {
-                secondMax = currentNumber;
-            }
-
-            return doSeekSecondMaximumNumber(numbers, lastIndex - 1, firstMax, secondMax);
+    public static <T extends Comparable<T>> T getSecondMaximum(List<T> items) {
+        if (items.isEmpty()) {
+            return null;
         }
 
+        return getSecondMaximum(items, items.size(), null, null);
+    }
+
+    private static <T extends Comparable<T>> T getSecondMaximum(
+            List<T> items,
+            int lastIndex,
+            T firstMax,
+            T secondMax
+    ) {
+        if (lastIndex == 0) {
+            return secondMax;
+        } else {
+            final T cur = items.get(lastIndex - 1);
+            if (isHigher(cur, firstMax)) {
+                secondMax = firstMax;
+                firstMax = cur;
+            } else if (isHigher(cur, secondMax)) {
+                secondMax = cur;
+            }
+            return getSecondMaximum(items, lastIndex - 1, firstMax, secondMax);
+        }
+    }
+
+    private static <T extends Comparable<T>> boolean isHigher(T one, T two) {
+        if (one == two)
+            return false;
+
+        if (two == null)
+            return true;
+
+        return one.compareTo(two) > 0;
     }
 }
