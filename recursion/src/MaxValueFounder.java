@@ -3,11 +3,30 @@ import java.util.List;
 public abstract class MaxValueFounder {
 
     public static <T extends Comparable<T>> T getSecondMaximum(List<T> items) {
-        if (items.isEmpty()) {
+        if (items.size() < 2) {
             return null;
         }
 
-        return getSecondMaximum(items, items.size(), null, null);
+        T firstItem = items.get(0);
+        T secondItem = items.get(1);
+
+        T firstMax;
+        if (isFirstArgumentHigherThanTwo(firstItem, secondItem)) {
+            firstMax = items.get(0);
+        } else {
+            firstMax = items.get(1);
+        }
+
+        T secondMax;
+        if (isFirstArgumentHigherThanTwo(secondItem, firstItem)) {
+            secondMax = firstItem;
+        } else {
+            secondMax = secondItem;
+        }
+
+        List<T> newItems = items.subList(2, items.size());
+
+        return getSecondMaximum(newItems, newItems.size(), firstMax, secondMax);
     }
 
     private static <T extends Comparable<T>> T getSecondMaximum(
