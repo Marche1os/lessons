@@ -11,17 +11,14 @@ public abstract class MaxValueFounder {
         T secondItem = items.get(1);
 
         T firstMax;
-        if (isFirstArgumentHigherThanTwo(firstItem, secondItem)) {
-            firstMax = items.get(0);
-        } else {
-            firstMax = items.get(1);
-        }
-
         T secondMax;
-        if (isFirstArgumentHigherThanTwo(secondItem, firstItem)) {
-            secondMax = firstItem;
-        } else {
+        if (isFirstArgumentHigherThanTwo(firstItem, secondItem)) {
+            firstMax = firstItem;
             secondMax = secondItem;
+
+        } else {
+            firstMax = secondItem;
+            secondMax = firstItem;
         }
 
         List<T> newItems = items.subList(2, items.size());
