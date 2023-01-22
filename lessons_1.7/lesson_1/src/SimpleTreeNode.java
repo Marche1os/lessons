@@ -4,11 +4,18 @@ public class SimpleTreeNode<T> {
     public T NodeValue;
     public SimpleTreeNode<T> Parent;
     public List<SimpleTreeNode<T>> Children;
+    public int depth;
 
     public SimpleTreeNode(T val, SimpleTreeNode<T> parent) {
         NodeValue = val;
         Parent = parent;
         Children = null;
+        setDepth();
+    }
+
+    private void setDepth() {
+        if (Parent != null)
+            depth = Parent.depth + 1;
     }
 }
 
@@ -61,7 +68,7 @@ class SimpleTree<T> {
             return;
 
         final SimpleTreeNode<T> parentNode = NodeToDelete.Parent;
-        parentNode.Children.removeIf(node -> NodeToDelete.equals(node));
+        parentNode.Children.removeIf(NodeToDelete::equals);
 
         modificationCount++;
     }
@@ -124,6 +131,7 @@ class SimpleTree<T> {
     public void MoveNode(SimpleTreeNode<T> OriginalNode, SimpleTreeNode<T> NewParent) {
         DeleteNode(OriginalNode);
         AddChild(NewParent, OriginalNode);
+        recountDepth(NewParent);
     }
 
     public int Count() {
@@ -192,5 +200,19 @@ class SimpleTree<T> {
         }
 
         return newLeavesCount;
+    }
+
+    private void recountDepth(SimpleTreeNode<T> child) {
+        if (child.Children == null)
+            return;
+
+        for (SimpleTreeNode<T> node : child.Children) {
+            node.depth = node.Parent.depth + 1;
+            recountDepth(node);
+        }
+    }
+
+    public int getDepthByNode(final SimpleTreeNode<T> node) {
+        return node.depth;
     }
 }

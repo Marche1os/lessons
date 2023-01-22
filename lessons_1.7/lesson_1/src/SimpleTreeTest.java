@@ -302,6 +302,38 @@ public class SimpleTreeTest {
 
         tree.DeleteNode(secondChildOfRoot);
         assertEquals(2, tree.Count());
+    }
+
+    @Test
+    void testDepth() {
+        final SimpleTreeNode<Integer> root = new SimpleTreeNode<>(100, null);
+        final SimpleTree<Integer> tree = new SimpleTree<>(root);
+
+        assertEquals(1, tree.Count());
+        assertEquals(0, tree.Root.depth);
+
+        final SimpleTreeNode<Integer> firstChildRoot = new SimpleTreeNode<>(16, tree.Root);
+        final SimpleTreeNode<Integer> secondChildRoot = new SimpleTreeNode<>(24, tree.Root);
+
+        tree.AddChild(firstChildRoot.Parent, firstChildRoot);
+        tree.AddChild(secondChildRoot.Parent, secondChildRoot);
+
+        assertEquals(1, firstChildRoot.depth);
+        assertEquals(1, secondChildRoot.depth);
+
+        final SimpleTreeNode<Integer> firstChildOfFirstChild = new SimpleTreeNode<>(32, firstChildRoot);
+        tree.AddChild(firstChildOfFirstChild.Parent, firstChildOfFirstChild);
+
+        assertEquals(2, firstChildOfFirstChild.depth);
+
+        tree.MoveNode(firstChildRoot, secondChildRoot);
+
+        assertEquals(24, tree.Root.Children.get(0).NodeValue);
+        assertEquals(16, tree.Root.Children.get(0).Children.get(0).NodeValue);
+
+        assertEquals(1, secondChildRoot.depth);
+        assertEquals(2, firstChildRoot.depth);
+        assertEquals(3, firstChildOfFirstChild.depth);
 
     }
 }
