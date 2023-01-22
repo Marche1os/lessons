@@ -9,15 +9,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SimpleTreeTest {
     private SimpleTree<Integer> emptyTree;
-    private SimpleTree<Integer> completedTree;
 
     @BeforeEach
     void generateTestTrees() {
         emptyTree = new SimpleTree<>(null);
-
-        final SimpleTreeNode<Integer> root = new SimpleTreeNode<>(100, null);
-        completedTree = new SimpleTree<>(root);
-
     }
 
     @Test
@@ -195,6 +190,34 @@ public class SimpleTreeTest {
     @Test
     @DisplayName("count all nodes in the tree")
     void countAllNodes() {
+        assertEquals(0, emptyTree.Count());
+
+        final SimpleTreeNode<Integer> root = new SimpleTreeNode<>(100, null);
+        final SimpleTree<Integer> tree = new SimpleTree<>(root);
+        assertEquals(1, tree.Count());
+        assertEquals(100, tree.Root.NodeValue);
+
+        final SimpleTreeNode<Integer> firstChildOfRoot = new SimpleTreeNode<>(51, root);
+        final SimpleTreeNode<Integer> secondChildOfRoot = new SimpleTreeNode<>(256, root);
+        final SimpleTreeNode<Integer> firstChildOfSecond = new SimpleTreeNode<>(512, secondChildOfRoot);
+        final SimpleTreeNode<Integer> firstChildOfFirst = new SimpleTreeNode<>(1024, firstChildOfSecond);
+
+        tree.AddChild(firstChildOfRoot.Parent, firstChildOfRoot);
+        tree.AddChild(secondChildOfRoot.Parent, secondChildOfRoot);
+        tree.AddChild(firstChildOfSecond.Parent, firstChildOfSecond);
+        tree.AddChild(firstChildOfFirst.Parent, firstChildOfFirst);
+
+        assertEquals(5, tree.Count());
+
+        tree.MoveNode(firstChildOfSecond, firstChildOfRoot);
+        assertEquals(5, tree.Count());
+
+        tree.DeleteNode(firstChildOfSecond);
+
+        assertEquals(3, tree.Count());
+
+        tree.DeleteNode(secondChildOfRoot);
+        assertEquals(2, tree.Count());
 
     }
 }

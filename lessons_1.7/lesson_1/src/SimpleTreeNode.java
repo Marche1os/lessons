@@ -1,9 +1,9 @@
 import java.util.*;
 
 public class SimpleTreeNode<T> {
-    public T NodeValue; // значение в узле
-    public SimpleTreeNode<T> Parent; // родитель или null для корня
-    public List<SimpleTreeNode<T>> Children; // список дочерних узлов или null
+    public T NodeValue;
+    public SimpleTreeNode<T> Parent;
+    public List<SimpleTreeNode<T>> Children;
 
     public SimpleTreeNode(T val, SimpleTreeNode<T> parent) {
         NodeValue = val;
@@ -13,18 +13,24 @@ public class SimpleTreeNode<T> {
 }
 
 class SimpleTree<T> {
-    public SimpleTreeNode<T> Root; // корень, может быть null
+    public SimpleTreeNode<T> Root;
 
-    private int countOfNodes;
+    private int nodesCount;
 
-    private int countOfLeaves;
+    private int leavesCount;
+    private int modificationCount;
+    private int nodesCountModificationLevel;
+    private int leavesCountModificationLevel;
 
     public SimpleTree(SimpleTreeNode<T> root) {
         Root = root;
         if (root != null && (root.Children == null || root.Children.isEmpty())) {
-            countOfLeaves = 1;
-            countOfNodes = 1;
+            leavesCount = 1;
+            nodesCount = 1;
         }
+        modificationCount = 0;
+        nodesCountModificationLevel = 0;
+        leavesCountModificationLevel = 0;
     }
 
     public void AddChild(SimpleTreeNode<T> ParentNode, SimpleTreeNode<T> NewChild) {
@@ -42,25 +48,22 @@ class SimpleTree<T> {
 
         NewChild.Parent = ParentNode;
         ParentNode.Children.add(NewChild);
-        countOfNodes++;
 
         if (Root.Children.isEmpty()) {
-            countOfLeaves = 1;
-        } else
-            countOfLeaves = getNewCountOfLeaves(Root);
+            leavesCount = 1;
+            nodesCount = 1;
+        }
+        modificationCount++;
     }
 
     public void DeleteNode(SimpleTreeNode<T> NodeToDelete) {
-        if (NodeToDelete == null || NodeToDelete.Parent == null)
+        if (NodeToDelete == null || NodeToDelete == Root)
             return;
 
         final SimpleTreeNode<T> parentNode = NodeToDelete.Parent;
         parentNode.Children.removeIf(node -> NodeToDelete.equals(node));
 
-        countOfNodes--;
-        countOfLeaves = getNewCountOfLeaves(Root);
-
-        // ваш код удаления существующего узла NodeToDelete
+        modificationCount++;
     }
 
     public List<SimpleTreeNode<T>> GetAllNodes() {
@@ -71,7 +74,6 @@ class SimpleTree<T> {
         founded.add(Root);
         founded.addAll(getAllRootChildren(Root));
 
-        // ваш код выдачи всех узлов дерева в определённом порядке
         return founded;
     }
 
@@ -94,12 +96,12 @@ class SimpleTree<T> {
             return Collections.emptyList();
 
         final List<SimpleTreeNode<T>> founded = new ArrayList<>();
+
         if (val.equals(Root))
             founded.add(Root);
 
         founded.addAll(getAllRootChildrenByValue(Root, val));
 
-        // ваш код поиска узлов по значению
         return founded;
     }
 
@@ -107,7 +109,7 @@ class SimpleTree<T> {
         if (child.Children == null || child.Children.isEmpty())
             return Collections.emptyList();
 
-        List<SimpleTreeNode<T>> founded = new ArrayList<>();
+        final List<SimpleTreeNode<T>> founded = new ArrayList<>();
 
         for (SimpleTreeNode<T> node : child.Children) {
             if (val.equals(node.NodeValue)) {
@@ -120,50 +122,75 @@ class SimpleTree<T> {
     }
 
     public void MoveNode(SimpleTreeNode<T> OriginalNode, SimpleTreeNode<T> NewParent) {
-        // ваш код перемещения узла вместе с его поддеревом --
-        // в качестве дочернего для узла NewParent
         DeleteNode(OriginalNode);
         AddChild(NewParent, OriginalNode);
     }
 
     public int Count() {
-        // количество всех узлов в дереве
-        // сделать оптимизацию. Подсчитывать количество листьев непосредственно при вызове этой функции.
-        // при этом завести подсчет модицификаций (добавление/удаление узлов)
-        // и завести признак, при какой модификации была вызвана эта функция.
-        // Если значения совпадают - вернуть текущее countOfNodes, иначе - пересчитать
-        return countOfNodes;
+        if (nodesCountModificationLevel == modificationCount)
+            return nodesCount;
+
+        if (Root == null) {
+            nodesCount = 0;
+            return nodesCount;
+        }
+        if (Root.Children == null || Root.Children.isEmpty()) {
+            nodesCount = 1;
+            return nodesCount;
+        }
+
+        int newNodesCount = 1;
+        newNodesCount += getNewNodesCount(Root);
+        nodesCount = newNodesCount;
+
+        nodesCountModificationLevel = modificationCount;
+        return nodesCount;
     }
 
-    private void updateCountOfNodes() {
-        // пройти по дереву и посчитать количество узлов (вызывать после добавления/удаления)
-    }
-
-    public int LeafCount() {
-        // количество листьев в дереве
-
-        // сделать оптимизацию. Подсчитывать количество листьев непосредственно при вызове этой функции.
-        // при этом завести подсчет модицификаций (добавление/удаление узлов)
-        // и завести признак, при какой модификации была вызвана эта функция.
-        // Если значения совпадают - вернуть текущее countOfLeaves, иначе - пересчитать
-        return countOfLeaves;
-    }
-
-    private int getNewCountOfLeaves(SimpleTreeNode<T> child) {
+    private int getNewNodesCount(SimpleTreeNode<T> child) {
         if (child.Children == null || child.Children.isEmpty())
             return 0;
 
-        int sum = 0;
+        int newNodesCount = 0;
 
         for (SimpleTreeNode<T> node : child.Children) {
-            if (node.Children == null || node.Children.isEmpty()) {
-                sum++;
-            }
-
-            sum += getNewCountOfLeaves(node);
+            newNodesCount++;
+            newNodesCount += getNewNodesCount(node);
         }
 
-        return sum;
-        // пройти по дереву и посчитать количество листьев (вызывать после добавления/удаления)
+        return newNodesCount;
+    }
+
+    public int LeafCount() {
+        if (leavesCountModificationLevel == modificationCount) {
+            return leavesCount;
+        }
+        if (Root == null) {
+            leavesCount = 0;
+            return leavesCount;
+        }
+        if (Root.Children == null || Root.Children.isEmpty()) {
+            leavesCount = 1;
+            return leavesCount;
+        }
+
+        leavesCount = getNewLeavesCount(Root);
+        leavesCountModificationLevel = modificationCount;
+        return leavesCount;
+    }
+
+    private int getNewLeavesCount(SimpleTreeNode<T> child) {
+        if (child.Children == null || child.Children.isEmpty())
+            return 0;
+
+        int newLeavesCount = 0;
+
+        for (SimpleTreeNode<T> node : child.Children) {
+            if (node.Children == null || node.Children.isEmpty())
+                newLeavesCount++;
+            newLeavesCount += getNewLeavesCount(node);
+        }
+
+        return newLeavesCount;
     }
 }
