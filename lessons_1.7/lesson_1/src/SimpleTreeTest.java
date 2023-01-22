@@ -20,9 +20,10 @@ public class SimpleTreeTest {
         assertNull(emptyTree.Root);
 
         SimpleTreeNode<Integer> rootNode = new SimpleTreeNode<>(100, null);
-        SimpleTreeNode<Integer> newChild = new SimpleTreeNode<>(51, rootNode);
+        emptyTree.AddChild(rootNode.Parent, rootNode);
 
-        emptyTree.AddChild(rootNode, newChild);
+        SimpleTreeNode<Integer> newChild = new SimpleTreeNode<>(51, emptyTree.Root);
+        emptyTree.AddChild(newChild.Parent, newChild);
 
         assertNotNull(emptyTree.Root);
         assertNull(emptyTree.Root.Parent);
@@ -42,12 +43,14 @@ public class SimpleTreeTest {
     @DisplayName("deleting non-root node.")
     void deleteNode() {
         SimpleTreeNode<Integer> rootNode = new SimpleTreeNode<>(100, null);
+        emptyTree.AddChild(rootNode.Parent, rootNode);
+
         SimpleTreeNode<Integer> newChild = new SimpleTreeNode<>(51, rootNode);
         SimpleTreeNode<Integer> newChild2 = new SimpleTreeNode<>(256, emptyTree.Root);
         SimpleTreeNode<Integer> newChild3 = new SimpleTreeNode<>(512, newChild2);
 
-        emptyTree.AddChild(rootNode, newChild);
-        emptyTree.AddChild(emptyTree.Root, newChild2);
+        emptyTree.AddChild(newChild.Parent, newChild);
+        emptyTree.AddChild(newChild2.Parent, newChild2);
         emptyTree.AddChild(newChild3.Parent, newChild3);
 
         assertNotNull(emptyTree.Root.Children);
@@ -66,9 +69,35 @@ public class SimpleTreeTest {
     }
 
     @Test
+    void deleteNodeFromOneElementTree() {
+        final SimpleTreeNode<Integer> root = new SimpleTreeNode<>(100, null);
+        emptyTree.DeleteNode(root);
+
+        emptyTree.AddChild(root.Parent, root);
+        assertEquals(100, emptyTree.Root.NodeValue);
+        assertNull(emptyTree.Root.Children);
+
+        emptyTree.DeleteNode(root);
+        assertNotNull(emptyTree.Root);
+
+        final SimpleTreeNode<Integer> child = new SimpleTreeNode<>(128, emptyTree.Root);
+        emptyTree.AddChild(child.Parent, child);
+
+        assertEquals(128, emptyTree.Root.Children.get(0).NodeValue);
+
+        emptyTree.DeleteNode(child);
+
+        assertTrue(emptyTree.Root.Children.isEmpty());
+    }
+
+    @Test
     @DisplayName("pass sequentially all tree to form all children")
     void getAllChildren() {
+        assertTrue(emptyTree.GetAllNodes().isEmpty());
+
         SimpleTreeNode<Integer> rootNode = new SimpleTreeNode<>(100, null);
+        emptyTree.AddChild(rootNode.Parent, rootNode);
+
         SimpleTreeNode<Integer> newChild = new SimpleTreeNode<>(51, rootNode);
         SimpleTreeNode<Integer> newChild2 = new SimpleTreeNode<>(256, emptyTree.Root);
         SimpleTreeNode<Integer> newChild3 = new SimpleTreeNode<>(512, newChild2);
@@ -93,6 +122,22 @@ public class SimpleTreeTest {
     }
 
     @Test
+    void getAllChildrenOnOneElement() {
+        assertTrue(emptyTree.FindNodesByValue(100).isEmpty());
+
+        final SimpleTreeNode<Integer> root = new SimpleTreeNode<>(100, null);
+        emptyTree.AddChild(root.Parent, root);
+
+        List<SimpleTreeNode<Integer>> founded = emptyTree.GetAllNodes();
+        assertEquals(100, founded.get(0).NodeValue);
+        assertEquals(1, founded.size());
+
+        emptyTree.AddChild(emptyTree.Root, new SimpleTreeNode<>(128, emptyTree.Root));
+        founded = emptyTree.GetAllNodes();
+        assertEquals(2, founded.size());
+    }
+
+    @Test
     void getAllChildrenOnEmptyList() {
         SimpleTree<Integer> simpleTree = new SimpleTree<>(null);
         assertTrue(simpleTree.GetAllNodes().isEmpty());
@@ -101,6 +146,7 @@ public class SimpleTreeTest {
     @Test
     void findAllChildrenByValue() {
         final SimpleTreeNode<Integer> root = new SimpleTreeNode<>(100, null);
+        emptyTree.AddChild(root.Parent, root);
 
         SimpleTreeNode<Integer> newChild = new SimpleTreeNode<>(51, root);
         SimpleTreeNode<Integer> newChild2 = new SimpleTreeNode<>(256, root);
@@ -128,9 +174,47 @@ public class SimpleTreeTest {
     }
 
     @Test
+    void findAllByValueCornerCases() {
+        List<SimpleTreeNode<Integer>> founded;
+        founded = emptyTree.FindNodesByValue(100);
+
+        assertTrue(founded.isEmpty());
+
+        final SimpleTreeNode<Integer> root = new SimpleTreeNode<>(100, null);
+        emptyTree.AddChild(root.Parent, root);
+
+        founded = emptyTree.FindNodesByValue(100);
+        assertEquals(1, founded.size());
+        assertEquals(100, founded.get(0).NodeValue);
+
+        final SimpleTreeNode<Integer> child1 = new SimpleTreeNode<>(128, emptyTree.Root);
+        emptyTree.AddChild(child1.Parent, child1);
+
+        founded = emptyTree.FindNodesByValue(128);
+        assertEquals(1, founded.size());
+        assertEquals(128, founded.get(0).NodeValue);
+
+        final SimpleTreeNode<Integer> child2 = new SimpleTreeNode<>(128, child1);
+        emptyTree.AddChild(child2.Parent, child2);
+
+        final SimpleTreeNode<Integer> child3 = new SimpleTreeNode<>(128, child1);
+        emptyTree.AddChild(child3.Parent, child3);
+
+        founded = emptyTree.FindNodesByValue(128);
+        assertEquals(3, founded.size());
+
+        for (SimpleTreeNode<Integer> node : founded) {
+            assertEquals(128, node.NodeValue);
+        }
+
+    }
+
+    @Test
     @DisplayName("move the node with all children to another place of tree")
     void moveNodesTo() {
         final SimpleTreeNode<Integer> root = new SimpleTreeNode<>(100, null);
+        emptyTree.AddChild(root.Parent, root);
+
         final SimpleTreeNode<Integer> firstChildOfRoot = new SimpleTreeNode<>(51, root);
         final SimpleTreeNode<Integer> secondChildOfRoot = new SimpleTreeNode<>(256, root);
         final SimpleTreeNode<Integer> firstChildOfSecond = new SimpleTreeNode<>(512, secondChildOfRoot);

@@ -34,29 +34,29 @@ class SimpleTree<T> {
     }
 
     public void AddChild(SimpleTreeNode<T> ParentNode, SimpleTreeNode<T> NewChild) {
-        if (ParentNode == null)
+        if (NewChild == null)
             return;
 
-        if (Root == null) {
-            Root = ParentNode;
-            Root.Parent = null;
-        }
+        modificationCount++;
 
-        if (ParentNode.Children == null) {
-            ParentNode.Children = new ArrayList<>();
+        if (Root == null || ParentNode == null) {
+            Root = NewChild;
+            Root.Parent = null;
+            return;
         }
 
         NewChild.Parent = ParentNode;
-        ParentNode.Children.add(NewChild);
 
-        if (Root.Children.isEmpty()) {
-            leavesCount = 1;
-            nodesCount = 1;
-        }
-        modificationCount++;
+        if (ParentNode.Children == null)
+            ParentNode.Children = new ArrayList<>();
+
+        ParentNode.Children.add(NewChild);
     }
 
     public void DeleteNode(SimpleTreeNode<T> NodeToDelete) {
+        if (Root == null)
+            return;
+
         if (NodeToDelete == null || NodeToDelete == Root)
             return;
 
@@ -97,7 +97,7 @@ class SimpleTree<T> {
 
         final List<SimpleTreeNode<T>> founded = new ArrayList<>();
 
-        if (val.equals(Root))
+        if (val.equals(Root.NodeValue))
             founded.add(Root);
 
         founded.addAll(getAllRootChildrenByValue(Root, val));
