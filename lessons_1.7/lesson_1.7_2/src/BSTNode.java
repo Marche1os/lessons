@@ -124,6 +124,12 @@ class BST<T> {
             return false;
         }
 
+        if (Root == nodeToDelete) {
+            Root = null;
+            count = 0;
+            return true;
+        }
+
         if (nodeToDelete.RightChild == null) {
             swapParent(nodeToDelete, null);
             nodeToDelete.Parent = null;

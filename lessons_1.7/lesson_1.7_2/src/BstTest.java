@@ -231,4 +231,31 @@ public class BstTest {
 
         assertTrue(emptyBinaryTree.DeleteNodeByKey(8));
     }
+
+    @Test
+    void deleteLastNode2() {
+        final BSTNode<Integer> root = new BSTNode<>(10, 0, null);
+        emptyBinaryTree = new BST<>(root);
+
+        emptyBinaryTree.AddKeyValue(5, 6);
+        emptyBinaryTree.AddKeyValue(12, 6);
+        emptyBinaryTree.AddKeyValue(3, 6);
+        emptyBinaryTree.AddKeyValue(1, 6);
+        emptyBinaryTree.AddKeyValue(4, 6);
+        emptyBinaryTree.AddKeyValue(6, 6);
+
+        assertNull(emptyBinaryTree.Root.RightChild.RightChild);
+        assertNull(emptyBinaryTree.Root.RightChild.LeftChild);
+
+        assertNull(emptyBinaryTree.Root.LeftChild.RightChild.RightChild);
+        assertNull(emptyBinaryTree.Root.LeftChild.RightChild.LeftChild);
+
+        assertTrue(emptyBinaryTree.DeleteNodeByKey(12));
+        assertTrue(emptyBinaryTree.DeleteNodeByKey(1));
+        assertTrue(emptyBinaryTree.DeleteNodeByKey(4));
+        assertTrue(emptyBinaryTree.DeleteNodeByKey(3));
+        assertTrue(emptyBinaryTree.DeleteNodeByKey(5));
+        assertTrue(emptyBinaryTree.DeleteNodeByKey(6));
+        assertTrue(emptyBinaryTree.DeleteNodeByKey(10));
+    }
 }
