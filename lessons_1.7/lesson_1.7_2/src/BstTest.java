@@ -86,6 +86,9 @@ public class BstTest {
         assertEquals(-1, emptyBinaryTree.Root.LeftChild.LeftChild.NodeKey);
 
         assertEquals(5, emptyBinaryTree.Count());
+
+        assertFalse(emptyBinaryTree.AddKeyValue(3, 3));
+        assertEquals(5, emptyBinaryTree.Count());
     }
 
     @Test
@@ -213,5 +216,19 @@ public class BstTest {
         assertSame(emptyBinaryTree.Root, emptyBinaryTree.Root.RightChild.Parent);
 
         assertEquals(4, emptyBinaryTree.Count());
+    }
+
+    @Test
+    void deleteLastNode() {
+        final BSTNode<Integer> root = new BSTNode<>(0, 0, null);
+        emptyBinaryTree = new BST<>(root);
+
+        emptyBinaryTree.AddKeyValue(1, 6);
+        emptyBinaryTree.AddKeyValue(5, 6);
+        emptyBinaryTree.AddKeyValue(3, 6);
+        emptyBinaryTree.AddKeyValue(6, 6);
+        emptyBinaryTree.AddKeyValue(8, 6);
+
+        assertTrue(emptyBinaryTree.DeleteNodeByKey(8));
     }
 }

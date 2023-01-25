@@ -124,6 +124,13 @@ class BST<T> {
             return false;
         }
 
+        if (nodeToDelete.RightChild == null) {
+            swapParent(nodeToDelete, null);
+            nodeToDelete.Parent = null;
+            count--;
+            return true;
+        }
+
         BSTNode<T> descendantNode = findMin(nodeToDelete.RightChild);
 
         if (descendantNode.LeftChild == null && descendantNode.RightChild == null) {
@@ -136,14 +143,17 @@ class BST<T> {
         return true;
     }
 
-    private void swapLinksForLeaf(BSTNode<T> nodeToDelete, BSTNode<T> descendantNode) {
+    private void swapParent(BSTNode<T> nodeToDelete, BSTNode<T> descendantNode) {
         boolean nodeToDeleteIsLeftToParent = (nodeToDelete.Parent.LeftChild == nodeToDelete);
         if (nodeToDeleteIsLeftToParent) {
             nodeToDelete.Parent.LeftChild = descendantNode;
         } else {
             nodeToDelete.Parent.RightChild = descendantNode;
         }
+    }
 
+    private void swapLinksForLeaf(BSTNode<T> nodeToDelete, BSTNode<T> descendantNode) {
+        swapParent(nodeToDelete, descendantNode);
         if (nodeToDelete.LeftChild != null) {
             nodeToDelete.LeftChild.Parent = descendantNode;
             descendantNode.LeftChild = nodeToDelete.LeftChild;
@@ -161,12 +171,7 @@ class BST<T> {
 
     private void swapLinksForNode(BSTNode<T> nodeToDelete, BSTNode<T> descendantNode) {
         descendantNode.Parent = nodeToDelete.Parent;
-        boolean nodeToDeleteIsLeftToParent = (nodeToDelete.Parent.LeftChild == nodeToDelete);
-        if (nodeToDeleteIsLeftToParent) {
-            nodeToDelete.Parent.LeftChild = descendantNode;
-        } else {
-            nodeToDelete.Parent.RightChild = descendantNode;
-        }
+        swapParent(nodeToDelete, descendantNode);
 
         if (nodeToDelete.LeftChild != null) {
             descendantNode.LeftChild = nodeToDelete.LeftChild;
