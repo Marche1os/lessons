@@ -1,3 +1,5 @@
+import java.util.*;
+
 class BSTNode<T> {
     public int NodeKey;
     public T NodeValue;
@@ -112,6 +114,32 @@ class BST<T> {
         if (null == fromNode.RightChild)
             return fromNode;
         return findMax(fromNode.RightChild);
+    }
+
+    public ArrayList<BSTNode> WideAllNodes() {
+        if (Root == null) 
+            return new ArrayList<>(0);
+
+        final LinkedList<BSTNode> queueOfNodes = new LinkedList<>();
+        final LinkedList<BSTNode> result = new LinkedList<>();
+
+        queueOfNodes.push(Root);
+
+        BSTNode<T> nodeVisitor;
+
+        while (!queueOfNodes.isEmpty()) {
+            nodeVisitor = queueOfNodes.poll();
+            result.addLast(nodeVisitor);
+
+            if (nodeVisitor.LeftChild != null)
+                queueOfNodes.addLast(nodeVisitor.LeftChild);
+
+            if (nodeVisitor.RightChild != null)
+                queueOfNodes.addLast(nodeVisitor.RightChild);
+
+        }
+
+        return new ArrayList<>(result);
     }
 
     public boolean DeleteNodeByKey(int key) {
