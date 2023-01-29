@@ -30,8 +30,8 @@ class BSTFind<T> {
 
 class BST<T> {
     public static final int IN_ORDER = 0;
-    public static final int PRE_ORDER = 1;
-    public static final int POST_ORDER = 2;
+    public static final int POST_ORDER = 1;
+    public static final int PRE_ORDER = 2;
 
     BSTNode<T> Root;
 
