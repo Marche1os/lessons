@@ -29,6 +29,10 @@ class BSTFind<T> {
 }
 
 class BST<T> {
+    public static final int IN_ORDER = 0;
+    public static final int PRE_ORDER = 1;
+    public static final int POST_ORDER = 2;
+
     BSTNode<T> Root;
 
     private int count;
@@ -140,6 +144,46 @@ class BST<T> {
         }
 
         return new ArrayList<>(result);
+    }
+
+    public ArrayList<BSTNode> DeepAllNodes(int orderStrategy) {
+        ArrayList<BSTNode> foundedNodes = new ArrayList<>();
+        if (orderStrategy == IN_ORDER) {
+            inOrderTraverse(Root, foundedNodes);
+        }
+        if (orderStrategy == POST_ORDER) {
+            postOrderTraverse(Root, foundedNodes);
+        }
+        if (orderStrategy == PRE_ORDER) {
+            preOrderTraverse(Root, foundedNodes);
+        }
+
+        return foundedNodes;
+    }
+
+    private void inOrderTraverse(BSTNode fromNode, ArrayList<BSTNode> allNodes) {
+        if (fromNode == null)
+            return;
+        inOrderTraverse(fromNode.LeftChild, allNodes);
+        allNodes.add(fromNode);
+        inOrderTraverse(fromNode.RightChild, allNodes);
+    }
+
+    private void postOrderTraverse(BSTNode fromNode, ArrayList<BSTNode> allNodes) {
+        if (fromNode == null)
+            return;
+
+        postOrderTraverse(fromNode.LeftChild, allNodes);
+        postOrderTraverse(fromNode.RightChild, allNodes);
+        allNodes.add(fromNode);
+    }
+
+    private void preOrderTraverse(BSTNode fromNode, ArrayList<BSTNode> allNodes) {
+        if (fromNode == null)
+            return;
+        allNodes.add(fromNode);
+        preOrderTraverse(fromNode.LeftChild, allNodes);
+        preOrderTraverse(fromNode.RightChild, allNodes);
     }
 
     public boolean DeleteNodeByKey(int key) {
