@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BstTest {
@@ -257,5 +259,13 @@ public class BstTest {
         assertTrue(emptyBinaryTree.DeleteNodeByKey(5));
         assertTrue(emptyBinaryTree.DeleteNodeByKey(6));
         assertTrue(emptyBinaryTree.DeleteNodeByKey(10));
+    }
+
+    @Test
+    void wideAllNodesTest() {
+        ArrayList<BSTNode> nodes = completedTree.WideAllNodes();
+
+        assertFalse(nodes.isEmpty());
+
     }
 }
