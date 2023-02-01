@@ -8,18 +8,15 @@ public class ArrayBinaryTreeTest {
     @Test
     void testTreeSize() {
         aBST bst = new aBST(2);
-        assertEquals(3, bst.Tree.length);
-
-        bst = new aBST(3);
         assertEquals(7, bst.Tree.length);
 
-        bst = new aBST(4);
+        bst = new aBST(3);
         assertEquals(15, bst.Tree.length);
 
-        bst = new aBST(5);
+        bst = new aBST(4);
         assertEquals(31, bst.Tree.length);
 
-        bst = new aBST(6);
+        bst = new aBST(5);
         assertEquals(63, bst.Tree.length);
     }
 
@@ -54,11 +51,11 @@ public class ArrayBinaryTreeTest {
 
     @Test
     void findKeyIndexInEmpty() {
-        aBST bst = new aBST(0);
+        aBST bst = new aBST(-1);
         Integer index = bst.FindKeyIndex(24);
         assertNull(index);
 
-        bst = new aBST(1);
+        bst = new aBST(2);
         int additionIndex = bst.AddKey(100);
 
         assertEquals(0, additionIndex);
@@ -68,7 +65,7 @@ public class ArrayBinaryTreeTest {
         assertEquals(0, index);
 
         index = bst.FindKeyIndex(140);
-        assertNull(index);
+        assertEquals(-2, index);
     }
 
     @Test
@@ -78,7 +75,6 @@ public class ArrayBinaryTreeTest {
 
         int index = bst.FindKeyIndex(100);
         assertEquals(0, index);
-        assertNull(bst.FindKeyIndex(124));
     }
 
     @Test
@@ -101,14 +97,14 @@ public class ArrayBinaryTreeTest {
 
     @Test
     void addKeyNull() {
-        final aBST bst = new aBST(1);
+        final aBST bst = new aBST(2);
 
         int index = bst.AddKey(50);
         assertEquals(0, index);
         assertEquals(50, bst.Tree[0]);
 
         index = bst.AddKey(24);
-        assertEquals(-1, index);
+        assertEquals(1, index);
 
         index = bst.AddKey(50);
         assertEquals(0, index);

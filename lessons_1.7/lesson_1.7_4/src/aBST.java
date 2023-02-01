@@ -10,19 +10,25 @@ class aBST {
     }
 
     private int getCalculatedTreeSizeByDepth(final int depth) {
-        if (depth <= 0)
+        if (depth < 0)
             return 0;
-        if (depth == 1)
+        if (depth == 0)
             return 1;
-        if (depth == 2)
+        if (depth == 1)
             return 3;
+        if (depth == 2)
+            return 7;
 
-        int treeSizeResult = 3;
-        int nodesCountOnCurrentDepth = 2;
+        int treeSizeResult = 0;
+        int nodeCount = 0;
 
-        for (int i = 3; i <= depth; i++) {
-            nodesCountOnCurrentDepth = nodesCountOnCurrentDepth * 2;
-            treeSizeResult += nodesCountOnCurrentDepth;
+        for (int i = 0; i <= depth; i++) {
+            if (i == 0)
+                nodeCount = 1;
+            else if (i == 1)
+                nodeCount = 2;
+            else nodeCount = nodeCount * 2;
+            treeSizeResult = treeSizeResult + nodeCount;
         }
 
         return treeSizeResult;
