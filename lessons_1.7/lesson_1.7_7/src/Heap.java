@@ -19,7 +19,10 @@ class Heap {
             return -1;
 
         int root = HeapArray[0];
+
+        HeapArray[0] = HeapArray[count - 1];
         HeapArray[--count] = 0;
+
         rebuildOnDelete();
 
         return root;
@@ -60,17 +63,17 @@ class Heap {
             int leftParent = index * 2 + 1;
             int rightParent = index * 2 + 2;
 
-            if (leftParent < HeapArray.length && HeapArray[largest] < HeapArray[leftParent])
+            if (leftParent < count && HeapArray[largest] < HeapArray[leftParent])
                 largest = leftParent;
 
-            if (rightParent < HeapArray.length && HeapArray[largest] < HeapArray[rightParent])
+            if (rightParent < count && HeapArray[largest] < HeapArray[rightParent])
                 largest = rightParent;
 
             if (index == largest)
                 break;
 
             int temp = HeapArray[index];
-            HeapArray[0] = HeapArray[index];
+            HeapArray[index] = HeapArray[largest];
             HeapArray[largest] = temp;
 
             index = largest;
