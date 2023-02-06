@@ -1,52 +1,43 @@
-import java.util.*;
-
 class Heap {
     public int[] HeapArray;
-    private int lastExistedIndex;
+    private int count;
 
     public Heap() {
         HeapArray = null;
     }
 
     public void MakeHeap(int[] a, int depth) {
-        if (null == a)
-            return;
-
         int heapSize = (int) (Math.pow(2, depth + 1) - 1);
-
         HeapArray = new int[heapSize];
 
         for (int item : a)
             Add(item);
-
-        lastExistedIndex = a.length - 1;
     }
 
     public int GetMax() {
-        if (HeapArray == null || lastExistedIndex < 0)
+        if (HeapArray == null || count == 0)
             return -1;
 
         int root = HeapArray[0];
+        HeapArray[--count] = 0;
         rebuildOnDelete();
 
         return root;
     }
 
     public boolean Add(int key) {
-        if (HeapArray == null)
+        if (count >= HeapArray.length)
             return false;
 
-        if (lastExistedIndex + 1 >= HeapArray.length)
-            return false;
-
-        HeapArray[++lastExistedIndex] = key;
+        HeapArray[count] = key;
         rebuildOnAdd();
+        count++;
 
         return true;
     }
 
     private void rebuildOnAdd() {
-        int index = lastExistedIndex;
+        int index = count;
         int parent = (index - 1) / 2;
 
         while (index > 0 && parent >= 0) {
@@ -62,10 +53,7 @@ class Heap {
     }
 
     private void rebuildOnDelete() {
-        int last = HeapArray[lastExistedIndex];
-        HeapArray[lastExistedIndex] = 0;
         int index = 0;
-        HeapArray[index] = last;
 
         while (true) {
             int largest = index;
@@ -87,7 +75,5 @@ class Heap {
 
             index = largest;
         }
-
-        lastExistedIndex--;
     }
 }
