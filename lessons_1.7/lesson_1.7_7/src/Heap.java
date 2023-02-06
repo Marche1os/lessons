@@ -16,7 +16,8 @@ class Heap {
 
         HeapArray = new int[heapSize];
 
-        System.arraycopy(a, 0, HeapArray, 0, a.length);
+        for (int item : a)
+            Add(item);
 
         lastExistedIndex = a.length - 1;
     }
@@ -34,6 +35,7 @@ class Heap {
     public boolean Add(int key) {
         if (HeapArray == null)
             return false;
+
         if (lastExistedIndex + 1 >= HeapArray.length)
             return false;
 
@@ -44,34 +46,48 @@ class Heap {
     }
 
     private void rebuildOnAdd() {
-        int last = HeapArray[lastExistedIndex];
+        int index = lastExistedIndex;
+        int parent = (index - 1) / 2;
 
-        for (int i = lastExistedIndex; i > 0; i--) {
-            if (HeapArray[i - 1] < last) {
-                int temp = HeapArray[i - 1];
-                HeapArray[i - 1] = last;
-                HeapArray[i] = temp;
+        while (index > 0 && parent >= 0) {
+            if (HeapArray[index] > HeapArray[parent]) {
+                int temp = HeapArray[index];
+                HeapArray[index] = HeapArray[parent];
+                HeapArray[parent] = temp;
             }
+            index = parent;
+            parent = (index - 1) / 2;
         }
+
     }
 
     private void rebuildOnDelete() {
-        if (lastExistedIndex >= HeapArray.length)
-            return;
-
         int last = HeapArray[lastExistedIndex];
         HeapArray[lastExistedIndex] = 0;
         int index = 0;
         HeapArray[index] = last;
 
-        for (int i = 0; i < lastExistedIndex; i++) {
-            if (HeapArray[i + 1] > last) {
-                int temp = HeapArray[i + 1];
-                HeapArray[i + 1] = last;
-                HeapArray[index] = temp;
-                index = i + 1;
-            }
+        while (true) {
+            int largest = index;
+            int leftParent = index * 2 + 1;
+            int rightParent = index * 2 + 2;
+
+            if (leftParent < HeapArray.length && HeapArray[largest] < HeapArray[leftParent])
+                largest = leftParent;
+
+            if (rightParent < HeapArray.length && HeapArray[largest] < HeapArray[rightParent])
+                largest = rightParent;
+
+            if (index == largest)
+                break;
+
+            int temp = HeapArray[index];
+            HeapArray[0] = HeapArray[index];
+            HeapArray[largest] = temp;
+
+            index = largest;
         }
+
         lastExistedIndex--;
     }
 }
