@@ -9,13 +9,14 @@ class Heap {
     }
 
     public void MakeHeap(int[] a, int depth) {
-        if (null == a || depth < 0 || depth < a.length)
+        if (null == a)
             return;
 
-        HeapArray = new int[depth];
+        int heapSize = (int) (Math.pow(2, depth + 1) - 1);
 
-        for (int i = 0; i < a.length; i++)
-            HeapArray[i] = a[i];
+        HeapArray = new int[heapSize];
+
+        System.arraycopy(a, 0, HeapArray, 0, a.length);
 
         lastExistedIndex = a.length - 1;
     }
