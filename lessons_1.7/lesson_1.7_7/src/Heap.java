@@ -9,6 +9,9 @@ class Heap {
     }
 
     public void MakeHeap(int[] a, int depth) {
+        if (null == a || depth < 0 || depth < a.length)
+            return;
+
         HeapArray = new int[depth];
 
         for (int i = 0; i < a.length; i++)
