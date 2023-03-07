@@ -212,6 +212,31 @@ class SimpleTree<T> {
         }
     }
 
+    public ArrayList<T> EvenTrees() {
+        final ArrayList<T> evenTreesResult = new ArrayList<>();
+
+        for (SimpleTreeNode<T> item : Root.Children) {
+            final int countOfNodesInSubtree = calcSubtree(item);
+            if (countOfNodesInSubtree / 2 == 0) {
+                evenTreesResult.add(Root.NodeValue);
+                evenTreesResult.add(item.NodeValue);
+            }
+        }
+
+        return evenTreesResult;
+    }
+
+    private int calcSubtree(SimpleTreeNode<T> node) {
+        if (node.Children == null || node.Children.isEmpty())
+            return 0;
+
+        for (SimpleTreeNode<T> item : node.Children) {
+            return 1 + calcSubtree(item);
+        }
+
+        return 0;
+    }
+
     public int getDepthByNode(final SimpleTreeNode<T> node) {
         return node.depth;
     }
