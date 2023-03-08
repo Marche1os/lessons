@@ -216,8 +216,8 @@ class SimpleTree<T> {
         final ArrayList<T> evenTreesResult = new ArrayList<>();
 
         for (SimpleTreeNode<T> item : Root.Children) {
-            final int countOfNodesInSubtree = calcSubtree(item);
-            if (countOfNodesInSubtree / 2 == 0) {
+            final int countOfNodesInSubtree = 1 + calcSubtree(item);
+            if (countOfNodesInSubtree % 2 == 0) {
                 evenTreesResult.add(Root.NodeValue);
                 evenTreesResult.add(item.NodeValue);
             }
@@ -230,11 +230,14 @@ class SimpleTree<T> {
         if (node.Children == null || node.Children.isEmpty())
             return 0;
 
+        int newNodesCount = 0;
+
         for (SimpleTreeNode<T> item : node.Children) {
-            return 1 + calcSubtree(item);
+            newNodesCount++;
+            newNodesCount += getNewNodesCount(item);
         }
 
-        return 0;
+        return newNodesCount;
     }
 
     public int getDepthByNode(final SimpleTreeNode<T> node) {
