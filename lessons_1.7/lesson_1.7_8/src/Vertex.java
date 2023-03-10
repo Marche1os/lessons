@@ -1,8 +1,13 @@
+import java.util.ArrayList;
+import java.util.Stack;
+
 class Vertex {
     public int Value;
+    public boolean Hit;
 
     public Vertex(int val) {
         Value = val;
+        Hit = false;
     }
 }
 
@@ -72,4 +77,48 @@ class SimpleGraph {
         m_adjacency[v1][v2] = 0;
         m_adjacency[v2][v1] = 0;
     }
+
+    public ArrayList<Vertex> DepthFirstSearch(int VFrom, int VTo) {
+        resetVertexHits();
+
+        final Stack<Integer> stack = new Stack<>();
+        final ArrayList<Vertex> fullPath = new ArrayList<>();
+
+        int currentIndex = VFrom;
+        vertex[currentIndex].Hit = true;
+        stack.push(currentIndex);
+
+        while (!stack.isEmpty()) {
+            currentIndex = stack.peek();
+
+            if (m_adjacency[currentIndex][VTo] == 1) {
+                stack.push(VTo);
+                break;
+            }
+
+            int i = 0;
+            for (; i < max_vertex; i++) {
+                Vertex x = vertex[i];
+                if (m_adjacency[currentIndex][i] == 1 && !x.Hit) {
+                    x.Hit = true;
+                    stack.push(i);
+                    break;
+                }
+            }
+
+            if (i == max_vertex)
+                stack.pop();
+        }
+
+        for (Integer index : stack)
+            fullPath.add(vertex[index]);
+
+        return fullPath;
+    }
+
+    private void resetVertexHits() {
+        for (Vertex v : vertex)
+            v.Hit = false;
+    }
+
 }
