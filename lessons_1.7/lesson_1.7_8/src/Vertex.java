@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Stack;
 
 class Vertex {
@@ -112,6 +113,45 @@ class SimpleGraph {
 
         for (Integer index : stack)
             fullPath.add(vertex[index]);
+
+        return fullPath;
+    }
+
+    public ArrayList<Vertex> BreadthFirstSearch(int VFrom, int VTo) {
+        resetVertexHits();
+
+        final ArrayList<Vertex> fullPath = new ArrayList<>();
+        final LinkedList<Integer> queue = new LinkedList<>();
+        final int[] ancestors = new int[max_vertex];
+
+        vertex[VFrom].Hit = true;
+        queue.addLast(VFrom);
+        int currentIndex;
+
+        while (!queue.isEmpty()) {
+            currentIndex = queue.pop();
+
+            if (m_adjacency[currentIndex][VTo] == 1) {
+                ancestors[VTo] = currentIndex;
+                break;
+            }
+
+            for (int i = 0; i < max_vertex; i++) {
+                Vertex x = vertex[i];
+                if (m_adjacency[currentIndex][i] == 1 && !x.Hit) {
+                    x.Hit = true;
+                    ancestors[i] = currentIndex;
+                    queue.addLast(i);
+                }
+            }
+        }
+
+        int dest = VTo;
+        fullPath.add(vertex[VTo]);
+        while (dest != VFrom) {
+            dest = ancestors[dest];
+            fullPath.add(0, vertex[dest]);
+        }
 
         return fullPath;
     }
