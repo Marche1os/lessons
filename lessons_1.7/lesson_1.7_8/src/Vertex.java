@@ -156,6 +156,36 @@ class SimpleGraph {
         return fullPath;
     }
 
+    public ArrayList<Vertex> WeakVertices() {
+        final ArrayList<Vertex> vertices = new ArrayList<>();
+        final boolean[] isTriangle = new boolean[max_vertex];
+
+        for (int i = 0; i < max_vertex; i++) {
+            if (!isTriangle[i]) {
+                int k = 0;
+
+                while (m_adjacency[i][k] == 0)
+                    k++;
+
+                for (int j = k; j < max_vertex; j++) {
+                    if (m_adjacency[i][j] == 1 && m_adjacency[k][j] == 1) {
+                        isTriangle[i] = true;
+                        isTriangle[j] = true;
+                        isTriangle[k] = true;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < max_vertex; i++) {
+            if (!isTriangle[i]) {
+                vertices.add(vertex[i]);
+            }
+        }
+
+        return vertices;
+    }
+
     private void resetVertexHits() {
         for (Vertex v : vertex)
             v.Hit = false;
