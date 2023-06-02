@@ -1,7 +1,7 @@
 // 16.1
 let notDivisible = function
     | (m, 0) -> false
-    | (m,n) when m % n = 0 -> true
+    | (n,m) when m % n = 0 -> true
     | _ -> false
 
 let rec isDivOnSmthExceptOne = function
@@ -14,4 +14,4 @@ let  prime = function
     | 0 | 1 -> false
     | 2 -> true
     | n when notDivisible(2, n) -> false
-    | n -> isDivOnSmthExceptOne(n, n-1)
+    | n -> isDivOnSmthExceptOne(n, n-1) 
