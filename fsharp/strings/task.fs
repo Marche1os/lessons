@@ -2,7 +2,7 @@ module fsharp.strings.task
 
 // 17.1
 let rec pow = function
-    | (s, 0) -> "0"
+    | (s, 0) -> ""
     | (s, 1) -> s
     | (s, n) -> s + pow(s, n - 1)
 
